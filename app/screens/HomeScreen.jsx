@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-// import Navbar from '../components/Navbar'; // Import Navbar component
+import Navbar from '../Component/Navbar'; // Import Navbar component
 import tw from 'tailwind-react-native-classnames';
 
 const HomeScreen = ({ navigation }) => {
@@ -12,7 +12,7 @@ const HomeScreen = ({ navigation }) => {
   const [checkOutTime, setCheckOutTime] = useState('17:00');
 
   const toggleExpand = () => {
-    setIsExpanded(!isExpanded);
+    setIsExpanded(!isExpanded); 
   };
 
   const gridItems = [
@@ -153,7 +153,7 @@ const HomeScreen = ({ navigation }) => {
       </ScrollView>
   
       {/* Add Navbar at the bottom */}
-      {/* <Navbar navigation={navigation} /> */}
+      <Navbar navigation={navigation} />
     </View>
   );  
 };
