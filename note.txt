@@ -1,4 +1,4 @@
-initiation:
+10/09/2024 instal:
 
 npm install rn-swipe-button --force
 
