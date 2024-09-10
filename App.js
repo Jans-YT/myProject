@@ -5,7 +5,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from './app/screens/Login'; // Import your LoginScreen
 import HomeScreen from './app/screens/HomeScreen'; // Import your HomeScreen
 import Board from './app/screens/Boarding';
-import Check from './app/screens/Checkin';
+import Checkin from './app/screens/Checkin';
+import Checkout from './app/screens/Checkout';
+import Face from './app/screens/Facecapture';
+import Leave from './app/screens/Applyleave';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -33,7 +36,10 @@ const App = () => {
          <Stack.Screen name="Board" component={Board} />
         <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Check" component={Check} />
+        <Stack.Screen name="Face" component={Face} />
+        <Stack.Screen name="Checkin" component={Checkin} />
+        <Stack.Screen name="Checkout" component={Checkout} />
+        <Stack.Screen name="Leave" component={Leave} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -25,8 +25,8 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const gridItems = [
-    { title: 'Check In', icon: 'login', onPress: () => navigation.navigate('Check') },
-    { title: 'Check Out', icon: 'logout', onPress: () => navigation.navigate('Check') },
+    { title: 'Check In', icon: 'login', onPress: () => navigation.navigate('Checkin') },
+    { title: 'Check Out', icon: 'logout', onPress: () => navigation.navigate('Checkout') },
     { title: 'Apply Leave', icon: 'work', onPress: () => navigation.navigate('Leave') },
     { title: 'Overtime', icon: 'access-time', onPress: () => navigation.navigate('Overtime') },
     { title: 'Reimburse', icon: 'receipt', onPress: () => navigation.navigate('Reimburse') },
@@ -120,7 +120,7 @@ const HomeScreen = ({ navigation }) => {
       <View style={tw`flex-row justify-between mx-5 mt-1`}>
         <TouchableOpacity
           style={[tw`flex-row items-center bg-white rounded-lg p-3`, { width: '48%' }]} // Inline style for percentage-based width
-          onPress={() => navigation.navigate('Check')}
+          onPress={() => navigation.navigate('Checkin')}
         >
           <Icon name="arrow-forward" size={24} color="red" />
           <View style={tw`ml-2`}>
@@ -130,7 +130,7 @@ const HomeScreen = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={[tw`flex-row items-center ml-10 bg-white rounded-lg p-3`, { width: '48%' }]} // Inline style for percentage-based width
-          onPress={() => navigation.navigate('Check')}
+          onPress={() => navigation.navigate('Checkout')}
         >
           <Icon name="arrow-back" size={24} color="red" />
           <View style={tw`ml-2`}>
