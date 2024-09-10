@@ -1,15 +1,24 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { useState, useRef, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Image, ScrollView, Animated } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-// import Navbar from '../components/Navbar'; // Import Navbar component
+import Navbar from '../Component/Navbar'; // Import Navbar component
 import tw from 'tailwind-react-native-classnames';
 
 const HomeScreen = ({ navigation }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const animation = useRef(new Animated.Value(0)).current; // Initialize animated value
 
   // State for check-in and check-out times
   const [checkInTime, setCheckInTime] = useState('08:00');
   const [checkOutTime, setCheckOutTime] = useState('17:00');
+
+  useEffect(() => {
+    Animated.timing(animation, {
+      toValue: isExpanded ? 1 : 0,
+      duration: 300, // Duration of the animation
+      useNativeDriver: false, // Height animations need to use the layout driver
+    }).start();
+  }, [isExpanded]);
 
   const toggleExpand = () => {
     setIsExpanded(!isExpanded);
@@ -25,6 +34,11 @@ const HomeScreen = ({ navigation }) => {
     { title: 'Resign', icon: 'exit-to-app', onPress: () => navigation.navigate('Resign') },
     { title: 'Payroll', icon: 'attach-money', onPress: () => navigation.navigate('Payroll') },
   ];
+
+  const contentHeight = animation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 100], // Adjust this range to the height of the expandable content
+  });
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -64,11 +78,13 @@ const HomeScreen = ({ navigation }) => {
             />
           </TouchableOpacity>
         </View>
-        {isExpanded && (
-          <View style={tw`mt-4`}>
-            <Text style={tw`text-white font-bold`}>Announcement</Text>
-          </View>
-        )}
+        <Animated.View style={[tw`mt-4 overflow-hidden`, { height: contentHeight }]}>
+          {isExpanded && (
+            <View>
+              <Text style={tw`text-white font-bold`}>Announcement</Text>
+            </View>
+          )}
+        </Animated.View>
       </View>
   
       {/* Read Button */}
@@ -83,27 +99,25 @@ const HomeScreen = ({ navigation }) => {
   
       {/* Grid Items */}
       <View style={[tw`bg-white rounded-lg p-1 mx-5 mt-2`]}>
-        <View style={tw`flex-row flex-wrap justify-between`}>
+        <View style={tw`flex-row flex-wrap ml-5 justify-between`}>
           {gridItems.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={tw`bg-red-600 w-20 h-20 rounded-lg mt-1 items-center justify-center`} // Fixed width for grid items
-              onPress={item.onPress}
-            >
-              <Icon name={item.icon} size={20} color="#FFFFFF" />
-              <Text style={tw`text-white text-xs mt-2 text-center`}>
+            <View key={index} style={tw`w-14 h-14 rounded-lg mt-6 mr-5 items-center justify-center`}>
+              <TouchableOpacity
+                style={tw`bg-red-600 w-full h-full rounded-lg items-center justify-center border border-transparent`}
+                onPress={item.onPress}
+              >
+                <Icon name={item.icon} size={24} color="#FFFFFF" />
+              </TouchableOpacity>
+              <Text style={tw`text-black w-20 text-xs mt-1 text-center`}>
                 {item.title}
               </Text>
-            </TouchableOpacity>
+            </View>
           ))}
         </View>
       </View>
   
       {/* Check In and Check Out Buttons */}
       <View style={tw`flex-row justify-between mx-5 mt-1`}>
-        {/* <Text>
-          Attendance today
-        </Text> */}
         <TouchableOpacity
           style={[tw`flex-row items-center bg-white rounded-lg p-3`, { width: '48%' }]} // Inline style for percentage-based width
           onPress={() => navigation.navigate('Check')}
@@ -115,7 +129,7 @@ const HomeScreen = ({ navigation }) => {
           </View>
         </TouchableOpacity>
         <TouchableOpacity
-          style={[tw`flex-row items-center bg-white rounded-lg p-3`, { width: '48%' }]} // Inline style for percentage-based width
+          style={[tw`flex-row items-center ml-10 bg-white rounded-lg p-3`, { width: '48%' }]} // Inline style for percentage-based width
           onPress={() => navigation.navigate('Check')}
         >
           <Icon name="arrow-back" size={24} color="red" />
@@ -153,9 +167,9 @@ const HomeScreen = ({ navigation }) => {
       </ScrollView>
   
       {/* Add Navbar at the bottom */}
-      {/* <Navbar navigation={navigation} /> */}
+      <Navbar navigation={navigation} />
     </View>
   );  
 };
 
-export default HomeScreen;
+export default HomeScreen;

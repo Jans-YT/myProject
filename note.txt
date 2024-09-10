@@ -1,0 +1,5 @@
+initiation:
+
+npm install rn-swipe-button --force
+
+

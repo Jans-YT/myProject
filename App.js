@@ -2,11 +2,10 @@ import React from 'react';
 // import { Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-// import LoginScreen from './app/screens/LoginScreen'; // Import your LoginScreen
+import LoginScreen from './app/screens/Login'; // Import your LoginScreen
 import HomeScreen from './app/screens/HomeScreen'; // Import your HomeScreen
-// import Board from './app/screens/OnboardingScreen';
-// import Check from './app/screens/CheckIn';
-// import Load from './app/screens/Loading';
+import Board from './app/screens/Boarding';
+import Check from './app/screens/Checkin';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -31,11 +30,10 @@ const App = () => {
           }),
         }}
       >
-        {/* <Stack.Screen name="Load" component={Load} /> */}
-         {/* <Stack.Screen name="Board" component={Board} /> */}
-        <Stack.Screen name="Login" component={HomeScreen} />
-        {/* <Stack.Screen name="Home" component={LoginScreen} />
-        <Stack.Screen name="Check" component={Check} /> */}
+         <Stack.Screen name="Board" component={Board} />
+        <Stack.Screen name="Login" component={LoginScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Check" component={Check} />
       </Stack.Navigator>
     </NavigationContainer>
   );
