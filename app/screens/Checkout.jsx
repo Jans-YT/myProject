@@ -9,7 +9,7 @@ import tw from 'tailwind-react-native-classnames';
 // Suppress the warning related to defaultProps
 LogBox.ignoreLogs(['Support for defaultProps will be removed']);
 
-const CheckIn = () => {
+const Checkout = () => {
   // State for selected date index
   const [selectedDate, setSelectedDate] = useState(0);
 
@@ -23,13 +23,12 @@ const CheckIn = () => {
   const checkInTime = '08:32 am';
   const checkOutTime = '05:40 pm';
 
-  const navigation = useNavigation();
-
   // Handling swipe to check-in
   const handleSwipe = () => {
     Alert.alert('Checked in successfully!');
-    navigation.navigate('Face'); // Navigate to the Face page
   };
+
+  const navigation = useNavigation();
 
   return (
     <View style={tw`flex-1 bg-gray-100`}>
@@ -37,35 +36,33 @@ const CheckIn = () => {
       <View style={tw`bg-red-700 p-5 pt-12 rounded-b-3xl`}>
         <Icon name="arrow-back" size={24} color="#fff" onPress={() => navigation.navigate('Home')} />
         <Text style={tw`text-white text-lg font-bold mt-2`}>
-          Welcome back{'\n'}Yudis, Enjoy your work
+        Thank you for your{'\n'}contribution today,{'\n'}have a good rest
         </Text>
         <Text style={tw`text-white text-2xl font-bold mt-1`}>17:32:32</Text>
       </View>
 
       {/* Date Scroll */}
-      <View style={tw`py-2 mx-5`}>
-        <ScrollView 
+      <ScrollView 
           horizontal 
           showsHorizontalScrollIndicator={true} 
           contentContainerStyle={tw`py-2`} // Ensure proper padding
           style={tw`max-h-16`} // Set a max height for the scroll view
         >
-          {dates.map((date, index) => (
-            <TouchableOpacity
-              key={index}
-              style={tw`bg-white px-3 py-2 rounded-lg mx-1 h-12 items-center ${selectedDate === index ? 'bg-red-700' : ''}`}
-              onPress={() => setSelectedDate(index)}
-            >
-              <Text style={tw`text-base font-bold ${selectedDate === index ? 'text-white' : 'text-black'}`}>
-                {String(date.day).padStart(2, '0')}
-              </Text>
-              <Text style={tw`text-xs ${selectedDate === index ? 'text-white' : 'text-gray-600'}`}>
-                {date.dayName}
-              </Text>
-            </TouchableOpacity>
-          ))}
-        </ScrollView>
-      </View>
+        {dates.map((date, index) => (
+          <TouchableOpacity
+            key={index}
+            style={tw`bg-white px-3 py-2 rounded-lg mx-1 h-12 items-center ${selectedDate === index ? 'bg-red-700' : ''}`}
+            onPress={() => setSelectedDate(index)}
+          >
+            <Text style={tw`text-base font-bold ${selectedDate === index ? 'text-white' : 'text-black'}`}>
+              {String(date.day).padStart(2, '0')}
+            </Text>
+            <Text style={tw`text-xs ${selectedDate === index ? 'text-white' : 'text-gray-600'}`}>
+              {date.dayName}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
 
       {/* Attendance Log */}
       <View style={tw`px-5 mt-96`}>
@@ -108,4 +105,4 @@ const CheckIn = () => {
   );
 };
 
-export default CheckIn;
+export default Checkout;
