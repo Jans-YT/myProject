@@ -9,6 +9,9 @@ import Checkin from './app/screens/Checkin';
 import Checkout from './app/screens/Checkout';
 import Face from './app/screens/Facecapture';
 import Leave from './app/screens/Applyleave';
+import Overtime from './app/screens/Overtime';
+import Reimburse from './app/screens/Reimburse';
+import Calender from './app/screens/Calender';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -40,6 +43,9 @@ const App = () => {
         <Stack.Screen name="Checkin" component={Checkin} />
         <Stack.Screen name="Checkout" component={Checkout} />
         <Stack.Screen name="Leave" component={Leave} />
+        <Stack.Screen name="Overtime" component={Overtime} />
+        <Stack.Screen name="Reimburse" component={Reimburse} />
+        <Stack.Screen name="Calender" component={Calender} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -30,7 +30,7 @@ const HomeScreen = ({ navigation }) => {
     { title: 'Apply Leave', icon: 'work', onPress: () => navigation.navigate('Leave') },
     { title: 'Overtime', icon: 'access-time', onPress: () => navigation.navigate('Overtime') },
     { title: 'Reimburse', icon: 'receipt', onPress: () => navigation.navigate('Reimburse') },
-    { title: 'Calendar', icon: 'calendar-today', onPress: () => navigation.navigate('Calendar') },
+    { title: 'Calendar', icon: 'calendar-today', onPress: () => navigation.navigate('Calender') },
     { title: 'Resign', icon: 'exit-to-app', onPress: () => navigation.navigate('Resign') },
     { title: 'Payroll', icon: 'attach-money', onPress: () => navigation.navigate('Payroll') },
   ];

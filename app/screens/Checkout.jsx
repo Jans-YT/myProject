@@ -42,7 +42,12 @@ const Checkout = () => {
       </View>
 
       {/* Date Scroll */}
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} style={tw`py-2 mx-5`}>
+      <ScrollView 
+          horizontal 
+          showsHorizontalScrollIndicator={true} 
+          contentContainerStyle={tw`py-2`} // Ensure proper padding
+          style={tw`max-h-16`} // Set a max height for the scroll view
+        >
         {dates.map((date, index) => (
           <TouchableOpacity
             key={index}
@@ -60,7 +65,7 @@ const Checkout = () => {
       </ScrollView>
 
       {/* Attendance Log */}
-      <View style={tw`px-5 mt-3`}>
+      <View style={tw`px-5 mt-96`}>
         <Text style={tw`text-lg font-bold mb-2`}>Attendance Log</Text>
         <View style={tw`flex-row justify-between`}>
           <View style={tw`bg-white p-4 rounded-lg w-5/12 shadow-md`}>
