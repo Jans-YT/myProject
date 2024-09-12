@@ -41,7 +41,7 @@ const HomeScreen = ({ navigation }) => {
   });
 
   return (
-    <View style={tw`flex-1 bg-white`}>
+    <View style={tw`flex-1 bg-gray-100`}>
       {/* Red Header Section */}
       <View style={tw`bg-red-700 rounded-b-3xl p-5 pb-16`}>
         <View style={tw`flex-row justify-between items-center`}>
@@ -59,15 +59,15 @@ const HomeScreen = ({ navigation }) => {
           </View>
           {/* Notification Icon */}
           <TouchableOpacity>
-            <View style={tw`bg-red-100 p-2 mt-6 rounded-lg`}>
-              <Icon name="notifications" size={30} color="#fff" />
+            <View style={tw`bg-white bg-opacity-40 p-2 mt-6 rounded-lg`}>
+              <Icon name="notifications" size={30} color="#ffffff" />
             </View>
           </TouchableOpacity>
         </View>
       </View>
-  
+
       {/* Expandable Container */}
-      <View style={tw`bg-red-900 rounded-lg p-5 mx-5 -mt-6 shadow-lg`}>
+      <View style={tw`bg-red-900 rounded-lg p-3 mx-5 -mt-9 shadow-lg`}>
         <View style={tw`flex-row justify-between items-center`}>
           <Text style={tw`text-white font-bold text-lg`}>Information</Text>
           <TouchableOpacity onPress={toggleExpand}>
@@ -86,63 +86,74 @@ const HomeScreen = ({ navigation }) => {
           )}
         </Animated.View>
       </View>
-  
+
       {/* Read Button */}
-      <View style={tw`bg-white rounded-lg py-5 px-5 mx-5 -mt-4 shadow-lg z-0`}>
+      <View style={tw`bg-white rounded-lg py-2 px-5 mx-5 -mt-4 shadow-lg z-0`}>
         <TouchableOpacity
-          style={tw`bg-blue-600 py-2 px-10 rounded-lg self-center`}
+          style={tw`bg-blue-500 w-1/2 items-center rounded-lg self-center`}
           onPress={toggleExpand}
         >
           <Text style={tw`text-white text-lg font-bold`}>Read</Text>
         </TouchableOpacity>
       </View>
-  
-      {/* Grid Items */}
-      <View style={[tw`bg-white rounded-lg p-1 mx-5 mt-2`]}>
-        <View style={tw`flex-row flex-wrap ml-5 justify-between`}>
-          {gridItems.map((item, index) => (
-            <View key={index} style={tw`w-14 h-14 rounded-lg mt-6 mr-5 items-center justify-center`}>
-              <TouchableOpacity
-                style={tw`bg-red-600 w-full h-full rounded-lg items-center justify-center border border-transparent`}
-                onPress={item.onPress}
-              >
-                <Icon name={item.icon} size={24} color="#FFFFFF" />
-              </TouchableOpacity>
-              <Text style={tw`text-black w-20 text-xs mt-1 text-center`}>
-                {item.title}
-              </Text>
-            </View>
-          ))}
+
+      <ScrollView style={tw`flex-1 mx-5 mt-5`} showsVerticalScrollIndicator={false}>
+        {/* Grid Items */}
+        <View style={[tw`bg-white rounded-lg p-3 h-52`]}>
+          <View style={tw`flex-row flex-wrap justify-between`}>
+            {gridItems.map((item, index) => (
+              <View key={index} style={tw`w-14 h-14 rounded-lg mt-6 mx-2 items-center justify-center`}>
+                <View style={tw`w-14`}>
+                  <TouchableOpacity
+                    style={tw`bg-red-600 w-full h-full rounded-2xl items-center justify-center border border-transparent`}
+                    onPress={item.onPress}
+                  >
+                    <Icon name={item.icon} size={24} color="#FFFFFF" />
+                  </TouchableOpacity>
+                </View>
+                <Text style={tw`text-black w-20 text-xs mt-1 text-center`}>
+                  {item.title}
+                </Text>
+              </View>
+            ))}
+          </View>
         </View>
-      </View>
-  
-      {/* Check In and Check Out Buttons */}
-      <View style={tw`flex-row justify-between mx-5 mt-1`}>
-        <TouchableOpacity
-          style={[tw`flex-row items-center bg-white rounded-lg p-3`, { width: '48%' }]} // Inline style for percentage-based width
-          onPress={() => navigation.navigate('Checkin')}
-        >
-          <Icon name="arrow-forward" size={24} color="red" />
-          <View style={tw`ml-2`}>
-            <Text style={tw`text-lg font-bold`}>Check In</Text>
-            <Text style={tw`text-gray-500`}>{checkInTime}</Text>
+
+        {/* Check In and Check Out Buttons */}
+        <View style={tw`flex-row justify-between mt-4`}>
+          <View style={tw`w-1/2 pr-2`}>
+            <TouchableOpacity
+              style={[tw`flex-row items-center bg-white rounded-lg bg-white`]} // Inline style for percentage-based width
+              onPress={() => navigation.navigate('Checkin')}
+            >
+              <View style={[tw`flex-row items-center bg-white rounded-lg bg-white ml-2`]}>
+                <Icon name="arrow-forward" size={24} color="red" />
+                <View style={tw`ml-2`}>
+                  <Text style={tw`text-lg font-bold`}>Check In</Text>
+                  <Text style={tw`text-gray-500`}>{checkInTime}</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[tw`flex-row items-center ml-10 bg-white rounded-lg p-3`, { width: '48%' }]} // Inline style for percentage-based width
-          onPress={() => navigation.navigate('Checkout')}
-        >
-          <Icon name="arrow-back" size={24} color="red" />
-          <View style={tw`ml-2`}>
-            <Text style={tw`text-lg font-bold`}>Check Out</Text>
-            <Text style={tw`text-gray-500`}>{checkOutTime}</Text>
+          <View style={tw`w-1/2 pl-2`}>
+            <TouchableOpacity
+              style={[tw`flex-row items-center bg-white rounded-lg bg-white`]} // Inline style for percentage-based width
+              onPress={() => navigation.navigate('Checkout')}
+            >
+              <View style={[tw`flex-row items-center bg-white rounded-lg bg-white pl-2`]}>
+                <Icon name="arrow-back" size={24} color="red" />
+                <View style={tw`ml-2`}>
+                  <Text style={tw`text-lg font-bold`}>Check Out</Text>
+                  <Text style={tw`text-gray-500`}>{checkOutTime}</Text>
+                </View>
+              </View>
+            </TouchableOpacity>
           </View>
-        </TouchableOpacity>
-      </View>
-  
-      {/* Attendance Log Container */}
-      <ScrollView style={tw`flex-1 mx-5 mt-5`}>
-        <Text style={tw`text-lg font-bold mb-4`}>Attendance Log</Text>
+        </View>
+
+        {/* Attendance Log Container */}
+
+        <Text style={tw`text-lg font-bold mb-4 mt-2`}>Attendance Log</Text>
         {[...Array(6)].map((_, index) => (
           <View key={index} style={tw`bg-white rounded-lg p-4 mb-4 shadow-lg`}>
             <View style={tw`flex-row justify-between`}>
@@ -165,11 +176,11 @@ const HomeScreen = ({ navigation }) => {
           </View>
         ))}
       </ScrollView>
-  
+
       {/* Add Navbar at the bottom */}
       <Navbar navigation={navigation} />
     </View>
-  );  
+  );
 };
 
 export default HomeScreen;

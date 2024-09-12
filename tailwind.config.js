@@ -6,7 +6,11 @@ module.exports = {
     './screens/**/*.{js,jsx,ts,tsx}', // Jika ada folder komponen
   ],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        customgray: '#F3F3F3',
+      }
+    },
   },
   plugins: [],
 };

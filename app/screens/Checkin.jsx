@@ -48,12 +48,12 @@ const CheckIn = () => {
           horizontal 
           showsHorizontalScrollIndicator={true} 
           contentContainerStyle={tw`py-2`} // Ensure proper padding
-          style={tw`max-h-16`} // Set a max height for the scroll view
+          style={tw` `} // Set a max height for the scroll view
         >
           {dates.map((date, index) => (
             <TouchableOpacity
               key={index}
-              style={tw`bg-white px-3 py-2 rounded-lg mx-1 h-12 items-center ${selectedDate === index ? 'bg-red-700' : ''}`}
+              style={tw`bg-white px-3 py-2 rounded-lg mx-1 w-14 h-14 items-center ${selectedDate === index ? 'bg-red-700' : ''}`}
               onPress={() => setSelectedDate(index)}
             >
               <Text style={tw`text-base font-bold ${selectedDate === index ? 'text-white' : 'text-black'}`}>
@@ -68,7 +68,7 @@ const CheckIn = () => {
       </View>
 
       {/* Attendance Log */}
-      <View style={tw`px-5 mt-96`}>
+      <View style={tw`px-5 `}>
         <Text style={tw`text-lg font-bold mb-2`}>Attendance Log</Text>
         <View style={tw`flex-row justify-between`}>
           <View style={tw`bg-white p-4 rounded-lg w-5/12 shadow-md`}>
