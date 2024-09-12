@@ -12,6 +12,13 @@ import Leave from './app/screens/Applyleave';
 import Overtime from './app/screens/Overtime';
 import Reimburse from './app/screens/Reimburse';
 import Calender from './app/screens/Calender';
+import Resign from './app/screens/Resign';
+import Payroll from './app/screens/Payroll';
+import PayrollDetail from './app/screens/PayrollDetail';
+import Profile from './app/screens/Profile';
+import Myprofile from './app/screens/Myprofile';
+import Compbio from './app/screens/Compbio';
+import Changepass from './app/screens/Changepass';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -46,6 +53,13 @@ const App = () => {
         <Stack.Screen name="Overtime" component={Overtime} />
         <Stack.Screen name="Reimburse" component={Reimburse} />
         <Stack.Screen name="Calender" component={Calender} />
+        <Stack.Screen name="Resign" component={Resign} />
+        <Stack.Screen name="Payroll" component={Payroll} />
+        <Stack.Screen name="PayrollDetail" component={PayrollDetail} />
+        <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Myprofile" component={Myprofile} />
+        <Stack.Screen name="Compbio" component={Compbio} />
+        <Stack.Screen name="Changepass" component={Changepass} />
       </Stack.Navigator>
     </NavigationContainer>
   );

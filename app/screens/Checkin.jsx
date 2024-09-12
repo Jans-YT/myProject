@@ -5,6 +5,7 @@ import SwipeButton from 'rn-swipe-button'; // Install rn-swipe-button
 import { LogBox } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'tailwind-react-native-classnames';
+import Svg, { Path } from 'react-native-svg';
 
 // Suppress the warning related to defaultProps
 LogBox.ignoreLogs(['Support for defaultProps will be removed']);
@@ -35,8 +36,12 @@ const CheckIn = () => {
     <View style={tw`flex-1 bg-gray-100`}>
       {/* Header */}
       <View style={tw`bg-red-700 p-5 pt-12 rounded-b-3xl`}>
-        <Icon name="arrow-back" size={24} color="#fff" onPress={() => navigation.navigate('Home')} />
-        <Text style={tw`text-white text-lg font-bold mt-2`}>
+      <TouchableOpacity style={tw`absolute mt-5 top-4 left-4`} onPress={() => navigation.navigate('Home')}>
+          <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <Path d="M14 7l-5 5 5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </Svg>
+        </TouchableOpacity>
+        <Text style={tw`text-white text-lg font-bold mt-10`}>
           Welcome back{'\n'}Yudis, Enjoy your work
         </Text>
         <Text style={tw`text-white text-2xl font-bold mt-1`}>17:32:32</Text>

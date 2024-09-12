@@ -5,11 +5,12 @@ import SwipeButton from 'rn-swipe-button'; // Install rn-swipe-button
 import { LogBox } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'tailwind-react-native-classnames';
+import Svg, { Path } from 'react-native-svg';
 
 // Suppress the warning related to defaultProps
 LogBox.ignoreLogs(['Support for defaultProps will be removed']);
 
-const Checkout = () => {
+const CheckIn = () => {
   // State for selected date index
   const [selectedDate, setSelectedDate] = useState(0);
 
@@ -23,49 +24,57 @@ const Checkout = () => {
   const checkInTime = '08:32 am';
   const checkOutTime = '05:40 pm';
 
+  const navigation = useNavigation();
+
   // Handling swipe to check-in
   const handleSwipe = () => {
     Alert.alert('Checked in successfully!');
+    navigation.navigate('Face'); // Navigate to the Face page
   };
-
-  const navigation = useNavigation();
 
   return (
     <View style={tw`flex-1 bg-gray-100`}>
       {/* Header */}
       <View style={tw`bg-red-700 p-5 pt-12 rounded-b-3xl`}>
-        <Icon name="arrow-back" size={24} color="#fff" onPress={() => navigation.navigate('Home')} />
-        <Text style={tw`text-white text-lg font-bold mt-2`}>
-        Thank you for your{'\n'}contribution today,{'\n'}have a good rest
+      <TouchableOpacity style={tw`absolute mt-5 top-4 left-4`} onPress={() => navigation.navigate('Home')}>
+          <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <Path d="M14 7l-5 5 5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </Svg>
+        </TouchableOpacity>
+        <Text style={tw`text-white text-lg font-bold mt-10`}>
+          Thank you for your contribution today
+          {'\n'}have a good rest
         </Text>
         <Text style={tw`text-white text-2xl font-bold mt-1`}>17:32:32</Text>
       </View>
 
       {/* Date Scroll */}
-      <ScrollView 
+      <View style={tw`py-2 mx-5`}>
+        <ScrollView 
           horizontal 
           showsHorizontalScrollIndicator={true} 
           contentContainerStyle={tw`py-2`} // Ensure proper padding
-          style={tw`max-h-16`} // Set a max height for the scroll view
+          style={tw` `} // Set a max height for the scroll view
         >
-        {dates.map((date, index) => (
-          <TouchableOpacity
-            key={index}
-            style={tw`bg-white px-3 py-2 rounded-lg mx-1 h-12 items-center ${selectedDate === index ? 'bg-red-700' : ''}`}
-            onPress={() => setSelectedDate(index)}
-          >
-            <Text style={tw`text-base font-bold ${selectedDate === index ? 'text-white' : 'text-black'}`}>
-              {String(date.day).padStart(2, '0')}
-            </Text>
-            <Text style={tw`text-xs ${selectedDate === index ? 'text-white' : 'text-gray-600'}`}>
-              {date.dayName}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+          {dates.map((date, index) => (
+            <TouchableOpacity
+              key={index}
+              style={tw`bg-white px-3 py-2 rounded-lg mx-1 w-14 h-14 items-center ${selectedDate === index ? 'bg-red-700' : ''}`}
+              onPress={() => setSelectedDate(index)}
+            >
+              <Text style={tw`text-base font-bold ${selectedDate === index ? 'text-white' : 'text-black'}`}>
+                {String(date.day).padStart(2, '0')}
+              </Text>
+              <Text style={tw`text-xs ${selectedDate === index ? 'text-white' : 'text-gray-600'}`}>
+                {date.dayName}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
 
       {/* Attendance Log */}
-      <View style={tw`px-5 mt-96`}>
+      <View style={tw`px-5 `}>
         <Text style={tw`text-lg font-bold mb-2`}>Attendance Log</Text>
         <View style={tw`flex-row justify-between`}>
           <View style={tw`bg-white p-4 rounded-lg w-5/12 shadow-md`}>
@@ -105,4 +114,4 @@ const Checkout = () => {
   );
 };
 
-export default Checkout;
+export default CheckIn;

@@ -47,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
         <View style={tw`flex-row justify-between items-center`}>
           <View style={tw`flex-row items-center mt-6`}>
             <Image
-              source={{
+              source={{ 
                 uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiC9hzmlKpf8irkfZ2cm0Vh75L8uK2GkfkZQ&s',
               }}
               style={{ width: 60, height: 60, borderRadius: 30, marginRight: 8 }} // Fixed width & height in numbers
