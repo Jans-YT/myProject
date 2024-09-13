@@ -66,7 +66,7 @@ const ApplyLeavePage = () => {
       <View style={tw`bg-white flex-1 rounded-t-3xl p-6`}>
         <ScrollView contentContainerStyle={tw`flex-1`}>
           <TextInput
-            placeholder="Sick Leave"
+            placeholder="Keterangan"
             style={tw`border border-gray-300 rounded p-2 mb-4`}
           />
           <View style={tw`mb-4`}>
@@ -77,7 +77,6 @@ const ApplyLeavePage = () => {
               style={tw`border border-gray-300 rounded`}
             >
               <Picker.Item label="Sick Leave" value="Sick Leave" />
-              <Picker.Item label="Medical Leave" value="Medical Leave" />
               <Picker.Item label="Personal Leave" value="Personal Leave" />
             </Picker>
           </View>

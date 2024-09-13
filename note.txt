@@ -1,4 +1,4 @@
-10/09/2024 instal:
+10/09/2024 install :
 
 npm install rn-swipe-button --force
 
@@ -10,7 +10,9 @@ npm install @react-native-picker/picker
 
 npm install react-native-modal-datetime-picker date-fns
 
-11/09/2024 instal :
+11/09/2024 install :
 
 npm install currency-formatter
 
+13/09/2024 imp :
+C:\Users\alann\Downloads\mobile hr3\myProject\node_modules\react-native\template\android\app\src\debug\AndroidManifest.xml

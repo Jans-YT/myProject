@@ -123,7 +123,7 @@ const ChangePassword = () => {
                 fill="#4CAF50"
               />
             </Svg>
-            <Text style={tw`text-black text-lg font-bold mt-4`}>Overtime Submitted</Text>
+            <Text style={tw`text-black text-lg font-bold mt-4`}>password changed</Text>
           </View>
         </View>
       </Modal>
