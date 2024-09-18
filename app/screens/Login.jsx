@@ -16,14 +16,14 @@ const LoginScreen = () => {
 
   return (
     <ImageBackground
-      source={{ uri: 'https://live.staticflickr.com/3216/2944375891_78d6d82f4a_b.jpg' }}
+      source={{ uri: 'https://static.wikia.nocookie.net/the-muse-list/images/1/11/Moric.png/revision/latest?cb=20201222211907' }}
       style={tw`flex-1 justify-center `}
     >
       <View style={tw`flex-1 justify-center items-center p-5`}>
         <View style={tw`w-11/12 bg-white rounded-lg p-5 shadow-lg justify-center items-center absolute bottom-12`}>
-          {/* <TouchableOpacity style={tw`absolute top-3 right-3 p-2`}>
+          <TouchableOpacity style={tw`absolute top-3 right-3 p-2`}>
             <Icon name="close" size={24} color="#000" />
-          </TouchableOpacity> */}
+          </TouchableOpacity>
           <Text style={tw`text-left font-bold text-xs mb-6`}>
             Selamat Datang!{'\n'}
             Log in using your username and password to access the HR Talent app.
