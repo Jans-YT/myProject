@@ -149,5 +149,5 @@ const ApplyLeavePage = () => {
   );
 };
 
-export default ApplyLeavePage;
+export default ApplyLeavePage;  
 

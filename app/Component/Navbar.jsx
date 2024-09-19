@@ -17,7 +17,7 @@ const Navbar = ({ navigation }) => {
           <Icon name="add" size={24} color="#fff" />
         </View>
       </TouchableOpacity>
-      <TouchableOpacity style={tw`p-2`} onPress={() => navigation.navigate('File')}>
+      <TouchableOpacity style={tw`p-2`} onPress={() => navigation.navigate('Lapor')}>
         <Icon name="attach-file" size={24} color="#000" />
       </TouchableOpacity>
       <TouchableOpacity style={tw`p-2`} onPress={() => navigation.navigate('Profile')}>

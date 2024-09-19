@@ -19,6 +19,7 @@ import Profile from './app/screens/Profile';
 import Myprofile from './app/screens/Myprofile';
 import Compbio from './app/screens/Compbio';
 import Changepass from './app/screens/Changepass';
+import Lapor from './app/screens/Laporan';
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -60,6 +61,7 @@ const App = () => {
         <Stack.Screen name="Myprofile" component={Myprofile} />
         <Stack.Screen name="Compbio" component={Compbio} />
         <Stack.Screen name="Changepass" component={Changepass} />
+        <Stack.Screen name="Lapor" component={Lapor} />
       </Stack.Navigator>
     </NavigationContainer>
   );
