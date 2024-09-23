@@ -36,9 +36,9 @@ const CheckIn = () => {
     <View style={tw`flex-1 bg-gray-100`}>
       {/* Header */}
       <View style={tw`bg-red-700 p-5 pt-12 rounded-b-3xl`}>
-      <TouchableOpacity style={tw`absolute mt-5 top-4 left-4`} onPress={() => navigation.navigate('Home')}>
+        <TouchableOpacity style={tw`absolute mt-5 top-4 left-4`} onPress={() => navigation.navigate('Home')}>
           <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <Path d="M14 7l-5 5 5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <Path d="M14 7l-5 5 5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </Svg>
         </TouchableOpacity>
         <Text style={tw`text-white text-lg font-bold mt-10`}>
@@ -50,9 +50,9 @@ const CheckIn = () => {
 
       {/* Date Scroll */}
       <View style={tw`py-2 mx-5`}>
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={true} 
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={true}
           contentContainerStyle={tw`py-2`} // Ensure proper padding
           style={tw` `} // Set a max height for the scroll view
         >

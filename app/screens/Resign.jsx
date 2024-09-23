@@ -34,7 +34,7 @@ const ResignPage = () => {
         {/* Icon Panah Kiri */}
         <TouchableOpacity style={tw`absolute mt-5 top-4 left-4`} onPress={() => navigation.navigate('Home')}>
           <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <Path d="M14 7l-5 5 5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <Path d="M14 7l-5 5 5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </Svg>
         </TouchableOpacity>
 

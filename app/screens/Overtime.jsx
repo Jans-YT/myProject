@@ -171,7 +171,7 @@ const OvertimePage = () => {
             <Text style={tw`text-xl font-bold mt-4`}>Submission Successful!</Text>
           </View>
         </View>
-      </Modal>  
+      </Modal>
     </View>
   );
 };

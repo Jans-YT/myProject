@@ -149,4 +149,3 @@ const ApplyLeavePage = () => {
 };
 
 export default ApplyLeavePage;
-

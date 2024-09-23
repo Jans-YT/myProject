@@ -60,10 +60,12 @@ const SlideshowScreen = () => {
         style={[
           tw`absolute w-full h-full`,
           {
-            transform: [{ translateX: slideAnim.interpolate({
-              inputRange: [-screenWidth, 0],
-              outputRange: [0, screenWidth],
-            }) }],
+            transform: [{
+              translateX: slideAnim.interpolate({
+                inputRange: [-screenWidth, 0],
+                outputRange: [0, screenWidth],
+              })
+            }],
           },
         ]}
       >
