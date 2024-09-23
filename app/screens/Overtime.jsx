@@ -44,7 +44,7 @@ const OvertimePage = () => {
 
   return (
     <View style={tw`flex-1 bg-white`}>
-      <View style={tw`bg-red-500 h-1/3 justify-center items-center`}>
+      <View style={tw`bg-red-500 h-1/3 justify-center items-center rounded-b-3xl`}>
         <TouchableOpacity style={tw`absolute mt-5 top-4 left-4`} onPress={() => navigation.navigate('Home')}>
           <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <Path d="M14 7l-5 5 5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />

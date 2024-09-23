@@ -77,7 +77,7 @@ const CheckIn = () => {
       <View style={tw`px-5 `}>
         <Text style={tw`text-lg font-bold mb-2`}>Attendance Log</Text>
         <View style={tw`flex-row justify-between`}>
-          <View style={tw`bg-white p-4 rounded-lg w-5/12 shadow-md`}>
+          <View style={tw`bg-white p-4 rounded-lg w-40 shadow-md`}>
             <View style={tw`flex-row items-center mb-1`}>
               <Icon name="arrow-forward" size={16} color="red" />
               <Text style={tw`ml-1 font-bold text-black`}>Check In</Text>
@@ -86,7 +86,7 @@ const CheckIn = () => {
             <Text style={tw`text-sm text-gray-600`}>Yesterday</Text>
           </View>
 
-          <View style={tw`bg-white p-4 rounded-lg w-5/12 shadow-md`}>
+          <View style={tw`bg-white p-4 rounded-lg w-40 shadow-md`}>
             <View style={tw`flex-row items-center mb-1`}>
               <Icon name="arrow-back" size={16} color="red" />
               <Text style={tw`ml-1 font-bold text-black`}>Check Out</Text>

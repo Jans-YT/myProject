@@ -78,9 +78,9 @@ const CalendarPage = () => {
   };
 
   return (
-    <View style={tw`flex-auto`}>
+    <View style={tw`flex-1`}>
       {/* Container 1: Header */}
-      <View style={tw`bg-red-500 flex-auto justify-center items-center`}>
+      <View style={tw`bg-red-500 h-1/3 rounded-b-3xl justify-center items-center`}>
         {/* Back Button */}
         <TouchableOpacity style={tw`absolute mt-5 top-4 left-4`} onPress={() => navigation.navigate('Home')}>
           <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
