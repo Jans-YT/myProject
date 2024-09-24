@@ -39,20 +39,19 @@ const ApplyLeavePage = () => {
   };
 
   return (
-    <View style={tw`flex-1`}>
+    <View style={tw`flex-1 bg-white`}>
       {/* Red Container */}
-      <View style={tw`bg-red-500 flex-1 justify-center items-center`}>
+      <View style={tw`bg-red-500 h-1/3 justify-center items-center rounded-b-3xl`}>
         {/* Back Button */}
         <TouchableOpacity style={tw`absolute mt-5 top-4 left-4`} onPress={() => navigation.navigate('Home')}>
           <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <Path d="M14 7l-5 5 5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+            <Path d="M14 7l-5 5 5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </Svg>
         </TouchableOpacity>
-
         {/* Icon and Text */}
         <View style={tw`mb-4`}>
           <Svg width="64" height="64" viewBox="0 0 24 24" fill="none">
-            <Path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="white"/>
+            <Path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="white" />
           </Svg>
         </View>
         <Text style={tw`text-white text-2xl font-bold text-center`}>
@@ -68,13 +67,13 @@ const ApplyLeavePage = () => {
         {/* Toggle Buttons */}
         <View style={tw`flex-row justify-between mb-4`}>
           <TouchableOpacity
-            style={[tw`flex-1 p-2 rounded-l-lg`, selectedSection === 'form' ? tw`bg-red-500` : tw`bg-gray-300`]}
+            style={[tw`flex-1 p-3 rounded-l-full`, selectedSection === 'form' ? tw`bg-red-500` : tw`bg-gray-300`]}
             onPress={() => setSelectedSection('form')}
           >
             <Text style={tw`text-center ${selectedSection === 'form' ? 'text-white' : 'text-black'}`}>Form</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[tw`flex-1 p-2 rounded-r-lg`, selectedSection === 'history' ? tw`bg-red-500` : tw`bg-gray-300`]}
+            style={[tw`flex-1 p-3 rounded-r-full`, selectedSection === 'history' ? tw`bg-red-500` : tw`bg-gray-300`]}
             onPress={() => setSelectedSection('history')}
           >
             <Text style={tw`text-center ${selectedSection === 'history' ? 'text-white' : 'text-black'}`}>History</Text>
@@ -139,7 +138,7 @@ const ApplyLeavePage = () => {
         <View style={tw`flex-1 justify-center items-center bg-black bg-opacity-50`}>qqq
           <View style={tw`bg-white p-8 rounded-lg items-center`}>
             <Svg width="64" height="64" viewBox="0 0 24 24" fill="none">
-              <Path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.83l-3.79-3.79 1.41-1.41L11 13.34l5.88-5.88 1.41 1.41L11 16.83z" fill="#4CAF50"/>
+              <Path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.83l-3.79-3.79 1.41-1.41L11 13.34l5.88-5.88 1.41 1.41L11 16.83z" fill="#4CAF50" />
             </Svg>
             <Text style={tw`text-black text-lg font-bold mt-4`}>Leave Applied Submitted</Text>
           </View>
@@ -149,5 +148,4 @@ const ApplyLeavePage = () => {
   );
 };
 
-export default ApplyLeavePage;  
-
+export default ApplyLeavePage;

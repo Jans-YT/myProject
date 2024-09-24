@@ -57,6 +57,7 @@ const LoginScreen = ({ navigation }) => {
   };
 
   return (
+<<<<<<< HEAD
     
       <View style={tw`flex-1 justify-center items-center p-5`}>
         <View style={tw`w-11/12 bg-white rounded-lg p-5 shadow-lg justify-center items-center absolute bottom-12`}>
@@ -67,6 +68,17 @@ const LoginScreen = ({ navigation }) => {
             Selamat Datang!{'\n'}
             Log in using your username and password to access the HR Talent app.
           </Text>
+=======
+    <View style={styles.container}>
+      <Text style={styles.title}>Login</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="Username"
+        value={email}
+        onChangeText={setemail}
+      />
+>>>>>>> 205fe2b84ff66456d9adb1b699f52d5afbc340b6
 
           {/* Username Input */}
           <TextInput
@@ -100,5 +112,46 @@ const LoginScreen = ({ navigation }) => {
   );
 };
 
+<<<<<<< HEAD
 export default LoginScreen;
 
+=======
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#fff',
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  button: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#3498db',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+});
+
+export default LoginScreen;
+>>>>>>> 205fe2b84ff66456d9adb1b699f52d5afbc340b6
