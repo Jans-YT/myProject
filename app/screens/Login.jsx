@@ -128,6 +128,8 @@ import { View, Text, TextInput, TouchableOpacity, ImageBackground } from 'react-
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'tailwind-react-native-classnames';
+import tw from 'tailwind-react-native-classnames';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
@@ -171,19 +173,53 @@ const LoginScreen = () => {
             onChangeText={setPassword}
           />
 
-          {/* Forgot Password */}
-          <TouchableOpacity>
-            <Text style={tw`text-blue-600 text-right w-full mb-5`}>Forgot Password?</Text>
-          </TouchableOpacity>
-
-          {/* Login Button */}
-          <TouchableOpacity style={tw`w-full bg-red-600 py-3 rounded-lg items-center`} onPress={handleLogin}>
-            <Text style={tw`text-white text-lg font-bold`}>Login</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ImageBackground>
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        {loading ? (
+          <ActivityIndicator size="small" color="#fff" />
+        ) : (
+          <Text style={styles.buttonText}>Login</Text>
+        )}
+      </TouchableOpacity>
+    </View>
   );
 };
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+    backgroundColor: '#f5f5f5',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#fff',
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#ddd',
+  },
+  button: {
+    width: '100%',
+    height: 50,
+    backgroundColor: '#3498db',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+  },
+});
+
 export default LoginScreen;
+
