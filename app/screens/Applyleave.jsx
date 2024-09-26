@@ -17,6 +17,7 @@ const ApplyLeavePage = () => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
   const navigation = useNavigation();
+  const [activeTab, setActiveTab] = useState('form'); // 'form' or 'history'
 
   const handleConfirmStartDate = (date) => {
     setStartDate(format(date, 'yyyy-MM-dd'));
@@ -63,61 +64,67 @@ const ApplyLeavePage = () => {
       </View>
 
       {/* White Container with Toggle Buttons */}
-      <View style={tw`bg-white flex-1 rounded-t-3xl p-6`}>
-        {/* Toggle Buttons */}
-        <View style={tw`flex-row justify-between mb-4`}>
+      <View style={tw`bg-white rounded-lg p-6 flex-1`}>
+        {/* Tab Switcher */}
+        <View style={tw`flex-row justify-around mb-4`}>
           <TouchableOpacity
-            style={[tw`flex-1 p-3 rounded-l-full`, selectedSection === 'form' ? tw`bg-red-500` : tw`bg-gray-300`]}
-            onPress={() => setSelectedSection('form')}
+            style={tw`p-2 ${activeTab === 'form' ? 'border-b-2 border-red-500' : ''}`}
+            onPress={() => setActiveTab('form')}
           >
-            <Text style={tw`text-center ${selectedSection === 'form' ? 'text-white' : 'text-black'}`}>Form</Text>
+            <Text style={tw`${activeTab === 'form' ? 'text-red-500' : 'text-gray-500'}`}>Form</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[tw`flex-1 p-3 rounded-r-full`, selectedSection === 'history' ? tw`bg-red-500` : tw`bg-gray-300`]}
-            onPress={() => setSelectedSection('history')}
+            style={tw`p-2 ${activeTab === 'history' ? 'border-b-2 border-red-500' : ''}`}
+            onPress={() => setActiveTab('history')}
           >
-            <Text style={tw`text-center ${selectedSection === 'history' ? 'text-white' : 'text-black'}`}>History</Text>
+            <Text style={tw`${activeTab === 'history' ? 'text-red-500' : 'text-gray-500'}`}>History</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Conditional Rendering: Show Form or History */}
-        {selectedSection === 'form' ? (
-          <ScrollView contentContainerStyle={tw`flex-1`} showsVerticalScrollIndicator={false}>
-            <TextInput
-              placeholder="Keterangan"
-              style={tw`border border-gray-300 rounded p-2 mb-4`}
-            />
-            <View style={tw`mb-4`}>
-              <Text style={tw`font-bold mb-2`}>Leave Type</Text>
-              <Picker
-                selectedValue={selectedLeaveType}
-                onValueChange={(itemValue) => setSelectedLeaveType(itemValue)}
-                style={tw`border border-gray-300 rounded`}
-              >
-                <Picker.Item label="Sick Leave" value="Sick Leave" />
-                <Picker.Item label="Personal Leave" value="Personal Leave" />
-              </Picker>
-            </View>
-            <TouchableOpacity style={tw`border border-gray-300 rounded p-2 mb-4`} onPress={() => setStartDatePickerVisibility(true)}>
-              <Text>{startDate || 'Start Date'}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={tw`border border-gray-300 rounded p-2 mb-4`} onPress={() => setEndDatePickerVisibility(true)}>
-              <Text>{endDate || 'End Date'}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={tw`bg-gray-200 rounded p-2 mb-4`}>
-              <Text>Upload File</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={tw`bg-red-500 rounded p-2`} onPress={handleSubmit}>
-              <Text style={tw`text-white text-center`}>Confirm</Text>
-            </TouchableOpacity>
-          </ScrollView>
-        ) : (
-          // History Section
+        {/* Form Section */}
+        {activeTab === 'form' && (
+          <>
+            <ScrollView contentContainerStyle={tw`flex-1`} showsVerticalScrollIndicator={false}>
+              <TextInput
+                placeholder="Keterangan"
+                style={tw`border border-gray-300 rounded p-2 mb-4`}
+              />
+              <View style={tw`mb-4`}>
+                <Text style={tw`font-bold mb-2`}>Leave Type</Text>
+                <Picker
+                  selectedValue={selectedLeaveType}
+                  onValueChange={(itemValue) => setSelectedLeaveType(itemValue)}
+                  style={tw`border border-gray-300 rounded`}
+                >
+                  <Picker.Item label="Sick Leave" value="Sick Leave" />
+                  <Picker.Item label="Personal Leave" value="Personal Leave" />
+                </Picker>
+              </View>
+              <TouchableOpacity style={tw`border border-gray-300 rounded p-2 mb-4`} onPress={() => setStartDatePickerVisibility(true)}>
+                <Text>{startDate || 'Start Date'}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={tw`border border-gray-300 rounded p-2 mb-4`} onPress={() => setEndDatePickerVisibility(true)}>
+                <Text>{endDate || 'End Date'}</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={tw`bg-gray-200 rounded p-2 mb-4`}>
+                <Text>Upload File</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={tw`bg-red-500 rounded p-2`} onPress={handleSubmit}>
+                <Text style={tw`text-white text-center`}>Confirm</Text>
+              </TouchableOpacity>
+            </ScrollView>
+          </>
+        )}
+
+        {/* History Section */}
+        {activeTab === 'history' && (
           <View style={tw`flex-1 justify-center items-center`}>
             <Text style={tw`text-gray-500`}>No leave requests found</Text>
           </View>
         )}
       </View>
+      
+      
 
       {/* Date Picker Modals */}
       <DateTimePickerModal

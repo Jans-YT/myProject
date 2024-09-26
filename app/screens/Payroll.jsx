@@ -64,7 +64,7 @@ const PayrollPage = () => {
                   <Text style={tw`text-white text-center text-sm`}>{item.status}</Text>
                 </View>
               </View>
-
+              
               {/* Right Arrow Icon */}
               <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <Path d="M9 18l6-6-6-6" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
