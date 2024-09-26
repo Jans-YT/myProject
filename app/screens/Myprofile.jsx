@@ -4,7 +4,7 @@ import tw from 'tailwind-react-native-classnames';
 import Svg, { Path } from 'react-native-svg';
 import { useNavigation } from '@react-navigation/native';
 
-const MyProfile = ({ navigationr }) => {
+const MyProfile = ({ navigation }) => {
   return (
     <ScrollView style={tw`flex-1 bg-white`}>
       <View style={tw`bg-red-500 p-6  rounded-b-xl items-center`}>

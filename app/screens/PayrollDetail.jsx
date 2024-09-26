@@ -13,7 +13,7 @@ const PayrollDetail = () => {
     <View style={tw`flex-1 bg-white`}>
       {/* Header with Back Button */}
       <View style={tw`bg-red-500 h-1/4 justify-center items-center`}>
-        <TouchableOpacity style={tw`absolute top-4 left-4`} onPress={() => navigation.goBack()}>
+        <TouchableOpacity style={tw`absolute top-10 left-4`} onPress={() => navigation.goBack()}>
           <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <Path d="M14 7l-5 5 5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </Svg>
