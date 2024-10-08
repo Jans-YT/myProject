@@ -9,7 +9,7 @@ const Navbar = ({ navigation }) => {
       <TouchableOpacity style={tw`p-2`} onPress={() => navigation.navigate('Home')}>
         <Icon name="home" size={24} color="#000" />
       </TouchableOpacity>
-      <TouchableOpacity style={tw`p-2`} onPress={() => navigation.navigate('Group')}>
+      <TouchableOpacity style={tw`p-2`} onPress={() => navigation.navigate('Employee')}>
         <Icon name="group" size={24} color="#000" />
       </TouchableOpacity>
       <TouchableOpacity style={tw`p-2`} onPress={() => navigation.navigate('Add')}>

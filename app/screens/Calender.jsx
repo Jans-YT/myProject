@@ -128,7 +128,7 @@ const CalendarPage = () => {
         </View>
 
         {/* Dates */}
-        <ScrollView contentContainerStyle={tw`flex-wrap flex-row justify-center`}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={tw`flex-wrap flex-row justify-center`}>
           {daysArray.map((day) => (
             <TouchableOpacity
               key={day}
@@ -170,7 +170,7 @@ const CalendarPage = () => {
           Schedule for {selectedDate ? `${selectedDate} ${months[month]} ${year}` : 'Select a date'}
         </Text>
 
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false}>
           {selectedDate && schedules[selectedDate] ? (
             schedules[selectedDate].map((schedule, index) => (
               <View key={index} style={tw`bg-white p-4 mb-2 rounded-lg shadow`}>
