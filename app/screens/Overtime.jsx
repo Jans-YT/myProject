@@ -76,7 +76,7 @@ const OvertimePage = () => {
         {/* Form Section */}
         {activeTab === 'form' && (
           <>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <View>
                 <Text style={tw`text-gray-700 mb-2`}>Note</Text>
                 <TextInput
