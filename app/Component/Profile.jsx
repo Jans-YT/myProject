@@ -9,7 +9,7 @@ const Profile = () => {
     const [isExpanded, setIsExpanded] = useState(false);
     const [userData, setUserData] = useState({
         nama: "",
-        dokumen: null,
+        dokumen: null, // Base64-encoded image string
         jabatan: "",
         cutimandiri: "",
     });
@@ -19,35 +19,37 @@ const Profile = () => {
         // Fetch user data from backend
         const fetchData = async () => {
             try {
-                // Ambil token dari AsyncStorage
-                const headers = {
-                    Authorization: AsyncStorage.getItem("accessToken"),
-                  };
+                // Retrieve the token from AsyncStorage
+                const accessToken = await AsyncStorage.getItem("accessToken");
+                console.log(accessToken);
 
-                // Pastikan token berhasil diambil
-                if (!headers) {
+                // Ensure the token is retrieved
+                if (!accessToken) {
                     throw new Error("Token tidak ditemukan.");
                 }
 
-                // Kirim permintaan ke API dengan token di header
+                const headers = {
+                    Authorization: ` ${accessToken}`, // Add Bearer token prefix
+                };
+
+                // Send the API request with the token in the header
                 const apiUrl = `http://10.0.2.2:3000/api/karyawan/get/data/self`;
 
                 const response = await axios.get(apiUrl, { headers });
 
-                // Tangkap data dari respons API
+                // Capture data from API response
                 const userData = response.data[0];
                 setUserData({
                     nama: userData.nama || "",
-                    dokumen: userData.dokumen || null,
+                    dokumen: userData.dokumen || null, // Assume this is Base64 string
                     jabatan: userData.jabatan || "",
                     cutimandiri: userData.cutimandiri || "",
                 });
 
-                // Simpan cutimandiri di AsyncStorage
+                // Store cutimandiri in AsyncStorage
                 await AsyncStorage.setItem('cutimandiri', userData.cutimandiri);
             } catch (error) {
                 console.error("Error fetching user data:", error);
-                // Handle error (e.g., show an alert or log error)
             }
         };
 
@@ -84,9 +86,9 @@ const Profile = () => {
                     <View style={tw`flex-row items-center mt-6`}>
                         <Image
                             source={{
-                                uri: userData.dokumen
+                                url: userData.dokumen
                                     ? `data:image/png;base64,${userData.dokumen}` // Assuming the document is in base64 format
-                                    : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiC9hzmlKpf8irkfZ2cm0Vh75L8uK2GkfkZQ&s',
+                                    : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiC9hzmlKpf8irkfZ2cm0Vh75L8uK2GkfkZQ&s', // Default image if no Base64 data
                             }}
                             style={{ width: 60, height: 60, borderRadius: 30, marginRight: 8 }} // Fixed width & height in numbers
                         />
