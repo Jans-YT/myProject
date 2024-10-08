@@ -1,11 +1,58 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView, Animated } from "react-native";
+import { View, Text, TouchableOpacity, Image, Animated } from "react-native";
 import tw from 'tailwind-react-native-classnames';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import axios from 'axios'; // Import Axios
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
 
 const Profile = () => {
     const [isExpanded, setIsExpanded] = useState(false);
+    const [userData, setUserData] = useState({
+        nama: "",
+        dokumen: null,
+        jabatan: "",
+        cutimandiri: "",
+    });
     const animation = useRef(new Animated.Value(0)).current; // Initialize animated value
+
+    useEffect(() => {
+        // Fetch user data from backend
+        const fetchData = async () => {
+            try {
+                // Ambil token dari AsyncStorage
+                const headers = {
+                    Authorization: AsyncStorage.getItem("accessToken"),
+                  };
+
+                // Pastikan token berhasil diambil
+                if (!headers) {
+                    throw new Error("Token tidak ditemukan.");
+                }
+
+                // Kirim permintaan ke API dengan token di header
+                const apiUrl = `http://10.0.2.2:3000/api/karyawan/get/data/self`;
+
+                const response = await axios.get(apiUrl, { headers });
+
+                // Tangkap data dari respons API
+                const userData = response.data[0];
+                setUserData({
+                    nama: userData.nama || "",
+                    dokumen: userData.dokumen || null,
+                    jabatan: userData.jabatan || "",
+                    cutimandiri: userData.cutimandiri || "",
+                });
+
+                // Simpan cutimandiri di AsyncStorage
+                await AsyncStorage.setItem('cutimandiri', userData.cutimandiri);
+            } catch (error) {
+                console.error("Error fetching user data:", error);
+                // Handle error (e.g., show an alert or log error)
+            }
+        };
+
+        fetchData();
+    }, []);
 
     useEffect(() => {
         Animated.timing(animation, {
@@ -18,6 +65,7 @@ const Profile = () => {
     const toggleExpand = () => {
         setIsExpanded(!isExpanded);
     };
+
     const announcementItems = [
         { label: 'Izin', number: Math.floor(Math.random() * 100) },
         { label: 'Cuti', number: Math.floor(Math.random() * 100) },
@@ -28,6 +76,7 @@ const Profile = () => {
         inputRange: [0, 1],
         outputRange: [0, 100], // Adjust this range to the height of the expandable content
     });
+
     return (
         <View>
             <View style={tw`bg-red-700 rounded-b-3xl p-5 pb-16`}>
@@ -35,13 +84,15 @@ const Profile = () => {
                     <View style={tw`flex-row items-center mt-6`}>
                         <Image
                             source={{
-                                uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiC9hzmlKpf8irkfZ2cm0Vh75L8uK2GkfkZQ&s',
+                                uri: userData.dokumen
+                                    ? `data:image/png;base64,${userData.dokumen}` // Assuming the document is in base64 format
+                                    : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiC9hzmlKpf8irkfZ2cm0Vh75L8uK2GkfkZQ&s',
                             }}
                             style={{ width: 60, height: 60, borderRadius: 30, marginRight: 8 }} // Fixed width & height in numbers
                         />
                         <View>
-                            <Text style={tw`text-white font-bold text-lg`}>Yudis Threey</Text>
-                            <Text style={tw`text-red-200 text-sm`}>UI/UX Designer</Text>
+                            <Text style={tw`text-white font-bold text-lg`}>{userData.nama}</Text>
+                            <Text style={tw`text-red-200 text-sm`}>{userData.jabatan}</Text>
                         </View>
                     </View>
                     {/* Notification Icon */}
@@ -81,6 +132,7 @@ const Profile = () => {
                 </Animated.View>
             </View>
         </View>
-    )
-}
+    );
+};
+
 export default Profile;
