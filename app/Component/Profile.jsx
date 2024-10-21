@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { View, Text, TouchableOpacity, Image, Animated } from "react-native";
+import { View, Text, TouchableOpacity, Image, Animated, Alert } from "react-native";
 import tw from 'tailwind-react-native-classnames';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import axios from 'axios'; // Import Axios
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Import AsyncStorage
+import { useNavigation } from '@react-navigation/native';
 
 const Profile = () => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -11,9 +12,12 @@ const Profile = () => {
         nama: "",
         dokumen: null, // Base64-encoded image string
         jabatan: "",
-        cutimandiri: "",
+        izinTerpakai: 0,
+        sisaIzin: 0,
+        cutiTerpakai: 0,
     });
     const animation = useRef(new Animated.Value(0)).current; // Initialize animated value
+    const navigation = useNavigation(); 
 
     useEffect(() => {
         // Fetch user data from backend
@@ -21,35 +25,38 @@ const Profile = () => {
             try {
                 // Retrieve the token from AsyncStorage
                 const accessToken = await AsyncStorage.getItem("accessToken");
-                console.log(accessToken);
 
-                // Ensure the token is retrieved
                 if (!accessToken) {
                     throw new Error("Token tidak ditemukan.");
                 }
 
                 const headers = {
-                    Authorization: ` ${accessToken}`, // Add Bearer token prefix
+                    Authorization: ` ${accessToken}`,
                 };
 
-                // Send the API request with the token in the header
-                const apiUrl = `http://10.0.2.2:3000/api/karyawan/get/data/self`;
+                // Fetch user profile data
+                const profileApiUrl = `http://10.0.2.2:3000/api/karyawan/get/data/self`;
+                const profileResponse = await axios.get(profileApiUrl, { headers });
+                const profileData = profileResponse.data[0];
 
-                const response = await axios.get(apiUrl, { headers });
+                // Fetch izin and cuti data (sisa izin, cuti terpakai, etc.)
+                const izinCutiApiUrl = `http://10.0.2.2:3000/api/pengajuan/get/sisa`;
+                const izinCutiResponse = await axios.get(izinCutiApiUrl, { headers });
+                const { Cuti_Terpakai, Izin_Terpakai, Sisa_Izin } = izinCutiResponse.data;
 
-                // Capture data from API response
-                const userData = response.data[0];
+                // Update state with fetched data
                 setUserData({
-                    nama: userData.nama || "",
-                    dokumen: userData.dokumen || null, // Assume this is Base64 string
-                    jabatan: userData.jabatan || "",
-                    cutimandiri: userData.cutimandiri || "",
+                    nama: profileData.nama || "",
+                    dokumen: profileData.dokumen || null,
+                    jabatan: profileData.jabatan || "",
+                    cutiTerpakai: Cuti_Terpakai || 0,
+                    izinTerpakai: Izin_Terpakai || 0,
+                    sisaIzin: Sisa_Izin || 0,
                 });
 
-                // Store cutimandiri in AsyncStorage
-                await AsyncStorage.setItem('cutimandiri', userData.cutimandiri);
             } catch (error) {
-                console.error("Error fetching user data:", error);
+                console.error("Error fetching data:", error);
+                Alert.alert("Error", "Gagal mengambil data dari server.");
             }
         };
 
@@ -69,9 +76,9 @@ const Profile = () => {
     };
 
     const announcementItems = [
-        { label: 'Izin', number: Math.floor(Math.random() * 100) },
-        { label: 'Cuti', number: Math.floor(Math.random() * 100) },
-        { label: 'Sakit', number: Math.floor(Math.random() * 100) },
+        { label: 'Izin Terpakai', number: userData.izinTerpakai },
+        { label: 'Sisa Izin', number: userData.sisaIzin },
+        { label: 'Cuti Terpakai', number: userData.cutiTerpakai },
     ];
 
     const contentHeight = animation.interpolate({
@@ -86,11 +93,11 @@ const Profile = () => {
                     <View style={tw`flex-row items-center mt-6`}>
                         <Image
                             source={{
-                                url: userData.dokumen
-                                    ? `data:image/png;base64,${userData.dokumen}` // Assuming the document is in base64 format
-                                    : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiC9hzmlKpf8irkfZ2cm0Vh75L8uK2GkfkZQ&s', // Default image if no Base64 data
+                                uri: userData.dokumen 
+                                    ? userData.dokumen
+                                    : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiC9hzmlKpf8irkfZ2cm0Vh75L8uK2GkfkZQ&s',
                             }}
-                            style={{ width: 60, height: 60, borderRadius: 30, marginRight: 8 }} // Fixed width & height in numbers
+                            style={{ width: 60, height: 60, borderRadius: 30, marginRight: 8 }}
                         />
                         <View>
                             <Text style={tw`text-white font-bold text-lg`}>{userData.nama}</Text>
@@ -99,8 +106,8 @@ const Profile = () => {
                     </View>
                     {/* Notification Icon */}
                     <TouchableOpacity>
-                        <View style={tw`bg-white bg-opacity-40 p-2 mt-6 rounded-lg`}>
-                            <Icon name="notifications" size={30} color="#ffffff" />
+                        <View style={tw`bg-white bg-opacity-40 p-2 mt-6 rounded-lg`} >
+                            <Icon name="notifications" size={30} color="#ffffff" onPress={() => navigation.navigate('Notif')}/>
                         </View>
                     </TouchableOpacity>
                 </View>

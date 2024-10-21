@@ -4,12 +4,33 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import Navbar from '../Component/Navbar'; // Import Navbar component
 import tw from 'tailwind-react-native-classnames';
 import Profile from '../Component/Profile';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const HomeScreen = ({ navigation }) => {
 
   // State for check-in and check-out times
-  const [checkInTime, setCheckInTime] = useState('08:00');
-  const [checkOutTime, setCheckOutTime] = useState('17:00');
+  const [checkInTime, setCheckInTime] = useState('N/A');
+  const [checkOutTime, setCheckOutTime] = useState('N/A');
+
+  // Fetch check-in and check-out times from the backend
+  useEffect(() => {
+    const fetchAttendanceData = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('accessToken');
+        const headers = { Authorization: accessToken };
+        const response = await axios.get('http://10.0.2.2:3000/api/absensi/get/today/self', { headers });
+        setCheckInTime(response.data.masuk || '');
+        setCheckOutTime(response.data.keluar || '');
+      } catch (error) {
+        console.error('Error fetching attendance data', error);
+      }
+    };
+
+    fetchAttendanceData();
+  }, []);
+
+  
 
   const gridItems = [
     { title: 'Check In', icon: 'login', onPress: () => navigation.navigate('Checkin') },
@@ -114,10 +135,10 @@ const HomeScreen = ({ navigation }) => {
         <View style={tw`flex-row justify-between mt-4`}>
           <View style={tw`w-1/2 pr-2`}>
             <TouchableOpacity
-              style={[tw`h-24 flex-row items-center bg-white rounded-lg bg-white`]} // Inline style for percentage-based width
+              style={tw`h-24 flex-row items-center bg-white rounded-lg`}
               onPress={() => navigation.navigate('Checkin')}
             >
-              <View style={[tw`flex-row items-center bg-white rounded-lg bg-white ml-2`]}>
+              <View style={tw`flex-row items-center ml-2`}>
                 <Icon name="arrow-forward" size={24} color="red" />
                 <View style={tw`ml-2`}>
                   <Text style={tw`text-lg font-bold`}>Check In</Text>
@@ -128,10 +149,10 @@ const HomeScreen = ({ navigation }) => {
           </View>
           <View style={tw`w-1/2 pl-2`}>
             <TouchableOpacity
-              style={[tw`h-24 flex-row items-center bg-white rounded-lg bg-white`]} // Inline style for percentage-based width
+              style={tw`h-24 flex-row items-center bg-white rounded-lg`}
               onPress={() => navigation.navigate('Checkout')}
             >
-              <View style={[tw`flex-row items-center bg-white rounded-lg bg-white pl-2`]}>
+              <View style={tw`flex-row items-center pl-2`}>
                 <Icon name="arrow-back" size={24} color="red" />
                 <View style={tw`ml-2`}>
                   <Text style={tw`text-lg font-bold`}>Check Out</Text>

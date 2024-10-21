@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Modal, Alert, FlatList } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Svg, { Path } from 'react-native-svg';
+import axios from 'axios';
+import ip from '../ip'; // Ensure this points to your API base URL
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const ReimbursementPage = () => {
   const navigation = useNavigation();
@@ -14,13 +17,50 @@ const ReimbursementPage = () => {
   const [file, setFile] = useState('');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [activeTab, setActiveTab] = useState('form'); // 'form' or 'history'
+  const [reimbursementHistory, setReimbursementHistory] = useState([]);
 
-  const handleSubmit = () => {
-    setIsModalVisible(true);
-    setTimeout(() => {
-      setIsModalVisible(false);
-      navigation.navigate('Home');
-    }, 2000);
+  useEffect(() => {
+    fetchHistory();
+  }, []);
+
+  const fetchHistory = async () => {
+    const apiUrl = `http://10.0.2.2:3000/api/reimburst/get/data/self`; // Adjust to your endpoint
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const headers = { Authorization: accessToken };
+
+    try {
+      const response = await axios.get(apiUrl, { headers });
+      setReimbursementHistory(response.data); // Assuming the response contains an array
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to fetch reimbursement history');
+    }
+  };
+
+  const handleSubmit = async () => {
+    const requestBody = {
+      keterangan: information,
+      biaya: cost.replace(/\./g, ''), // Removing formatting for backend
+      tanggal: date ? date.toISOString().split('T')[0] : null, // Format date for backend
+      // Assuming file is being uploaded
+    };
+
+    const apiUrl = `http://10.0.2.2:3000/api/reimburst/post`; // Adjust to your endpoint
+    const accessToken = await AsyncStorage.getItem('accessToken');
+    const headers = { Authorization: accessToken };
+
+    try {
+      const response = await axios.post(apiUrl, requestBody, { headers });
+      setIsModalVisible(true);
+      setTimeout(() => {
+        setIsModalVisible(false);
+        setActiveTab('history'); // Beralih ke tab history secara otomatis
+        fetchHistory(); // Refresh history after submission
+      }, 2000);
+    } catch (error) {
+      console.error(error);
+      Alert.alert('Error', 'Failed to submit reimbursement request');
+    }
   };
 
   const handleDateChange = (event, selectedDate) => {
@@ -35,19 +75,41 @@ const ReimbursementPage = () => {
     setCost(formattedCost);
   };
 
-  const reimbursementHistory = [
-    { id: '1', info: 'Laptop Repair', date: '2023-09-01', status: 'accepted' },
-    { id: '2', info: 'Office Supplies', date: '2023-09-05', status: 'rejected' },
-    { id: '3', info: 'Travel Expense', date: '2023-09-10', status: 'accepted' },
-  ];
-
   const renderHistoryItem = ({ item }) => {
-    const statusColor = item.status === 'accepted' ? 'green-500' : 'red-500';
+    const isReimbursed = item.status === true; 
+    const isRejected = item.status === false;
+    const isPending = item.status === null; // Status null dianggap pending
+
     return (
       <View style={tw`p-4 mb-2 border border-gray-300 rounded`}>
-        <Text style={tw`text-gray-700`}>Info: {item.info}</Text>
-        <Text style={tw`text-gray-700`}>Date: {item.date}</Text>
-        <Text style={tw`text-${statusColor} font-bold`}>Status: {item.status}</Text>
+        <Text style={tw`text-gray-700`}>Info: {item.keterangan}</Text>
+        <Text style={tw`text-gray-700`}>Date: {item.tanggal}</Text>
+        
+        <View style={tw`flex-row items-center`}>
+          <Text style={tw`text-gray-700 mr-2`}>Status: </Text>
+          {isReimbursed ? (
+            <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <Path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.83l-3.79-3.79 1.41-1.41L11 13.34l5.88-5.88 1.41 1.41L11 16.83z"
+                fill="#4CAF50" // Hijau untuk checklist
+              />
+            </Svg>
+          ) : isRejected ? (
+            <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <Path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"
+                fill="#F44336" // Merah untuk silang
+              />
+            </Svg>
+          ) : isPending ? (
+            <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <Path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14h2v-2h-2v2zm0-4h2V7h-2v5z"
+                fill="#FFC107" // Kuning untuk tanda seru
+              />
+            </Svg>
+          ) : null}
+        </View>
       </View>
     );
   };

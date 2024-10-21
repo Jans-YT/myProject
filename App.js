@@ -21,6 +21,8 @@ import Compbio from './app/screens/Compbio';
 import Changepass from './app/screens/Changepass';
 import Lapor from './app/screens/Laporan';
 import Employee from './app/screens/Employee'
+import Notif from './app/screens/notif'
+import Detail from './app/screens/Detailn'
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -64,6 +66,8 @@ const App = () => {
         <Stack.Screen name="Changepass" component={Changepass} />
         <Stack.Screen name="Lapor" component={Lapor} />
         <Stack.Screen name="Employee" component={Employee} />
+        <Stack.Screen name="Notif" component={Notif} />
+        <Stack.Screen name="Detail" component={Detail} />
       </Stack.Navigator>
     </NavigationContainer>
   );

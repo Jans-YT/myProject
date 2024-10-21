@@ -1,11 +1,51 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, Image, ScrollView, Alert } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Svg, { Path } from 'react-native-svg';
 
 const ProfilePage = () => {
   const navigation = useNavigation();
+  const [profileData, setProfileData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('accessToken');
+        const response = await fetch('http://10.0.2.2:3000/api/karyawan/get/data/self', {
+          method: 'GET',
+          headers: {
+            Authorization: accessToken,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch profile data');
+        }
+
+        const data = await response.json();
+        setProfileData(data[0]); // Mengasumsikan respons adalah array dengan satu objek
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        Alert.alert('Error', 'Unable to fetch profile data');
+        setLoading(false);
+      }
+    };
+
+    fetchProfileData();
+  }, []);
+
+  if (loading) {
+    return (
+      <View style={tw`flex-1 justify-center items-center`}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={tw`flex-1 bg-white`}>
@@ -17,17 +57,14 @@ const ProfilePage = () => {
             <Path d="M14 7l-5 5 5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </Svg>
         </TouchableOpacity>
-
-        {/* Profile Image */}
         <Image
-          source={{ uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiC9hzmlKpf8irkfZ2cm0Vh75L8uK2GkfkZQ&s' }}
+          source={{ uri: profileData?.dokumen || 'https://via.placeholder.com/150' }}
           style={tw`w-24 h-24 rounded-full mt-8`}
         />
 
         {/* Profile Name and Title */}
-        <Text style={tw`text-white font-bold text-xl mt-4`}>Yudis Threey</Text>
-        <Text style={tw`text-white text-sm`}>Lead UI/UX Designer</Text>
-
+        <Text style={tw`text-white font-bold text-xl mt-4`}>{profileData?.nama || 'Name not available'}</Text>
+        <Text style={tw`text-white text-sm`}>{profileData?.jabatan || 'Position not available'}</Text>
         {/* Edit Profile Button */}
         <TouchableOpacity style={tw`bg-white rounded-full px-6 py-2 mt-4`} onPress={() => navigation.navigate('Myprofile')}>
           <Text style={tw`text-red-500 font-bold`}>Edit Profile</Text>

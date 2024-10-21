@@ -1,19 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import tw from 'tailwind-react-native-classnames';
 import { useNavigation } from '@react-navigation/native';
 import Svg, { Path } from 'react-native-svg';
+import axios from 'axios'; // Import axios
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PayrollPage = () => {
   const navigation = useNavigation();
+  const [payrollData, setPayrollData] = useState([]); // State to store payroll data
 
-  const payrollData = [
-    { date: '31', month: 'Jul', year: '2024', salary: '10.000.000,00', status: 'Success' },
-    { date: '30', month: 'Jun', year: '2024', salary: '10.000.000,00', status: 'Success' },
-    { date: '31', month: 'May', year: '2024', salary: '10.000.000,00', status: 'Success' },
-    { date: '30', month: 'Apr', year: '2024', salary: '10.000.000,00', status: 'Success' },
-    // Add more items as needed
-  ];
+  useEffect(() => {
+    // Fetch payroll data from the backend
+    const fetchPayrollData = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('accessToken');
+        const headers = { 
+          Authorization: accessToken, 
+          'Content-Type': 'application/json' 
+        };
+        const response = await axios.get('http://10.0.2.2:3000/api/payroll/get/data/self', { headers });
+        setPayrollData(response.data); // Set payroll data to the state
+      } catch (error) {
+        console.error('Error fetching payroll data:', error);
+      }
+    };
+
+    fetchPayrollData(); // Call the function to fetch payroll data on component mount
+  }, []);
 
   const handleNavigateToDetail = (item) => {
     navigation.navigate('PayrollDetail', { payrollItem: item });
@@ -56,10 +70,14 @@ const PayrollPage = () => {
 
               <View>
                 <Text style={tw`text-black font-bold`}>Monthly Salary HBM</Text>
-                <Text style={tw`text-gray-600`}>IDR {item.salary}</Text>
-                <View style={tw`bg-green-300 rounded px-2 py-1 w-20`}>
-                  <Text style={tw`text-white text-center text-sm`}>{item.status}</Text>
-                </View>
+                <Text style={tw`text-gray-600`}>IDR {item.nominal}</Text>
+                
+                {/* Conditional rendering based on isBonus */}
+                {item.isBonus && (
+                  <View style={tw`bg-green-300 rounded px-2 py-1 w-20`}>
+                    <Text style={tw`text-white text-center text-sm`}>Bonus</Text>
+                  </View>
+                )}
               </View>
 
               {/* Right Arrow Icon */}

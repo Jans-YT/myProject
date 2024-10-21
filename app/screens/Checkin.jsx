@@ -1,35 +1,99 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import SwipeButton from 'rn-swipe-button'; // Install rn-swipe-button
+import SwipeButton from 'rn-swipe-button';
 import { LogBox } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'tailwind-react-native-classnames';
 import Svg, { Path } from 'react-native-svg';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Suppress the warning related to defaultProps
 LogBox.ignoreLogs(['Support for defaultProps will be removed']);
 
 const CheckIn = () => {
-  // State for selected date index
-  const [selectedDate, setSelectedDate] = useState(0);
-
-  // Dummy dates for the calendar strip
-  const dates = Array.from({ length: 31 }, (_, index) => ({
-    day: index + 1,
-    dayName: new Date(2024, 8, index + 1).toLocaleDateString('en-US', { weekday: 'short' }),
-  }));
-
-  // Dummy check-in and check-out times
-  const checkInTime = '08:32 am';
-  const checkOutTime = '05:40 pm';
-
+  const [selectedDate, setSelectedDate] = useState(0); // Index for the currently selected date
+  const [serverTime, setServerTime] = useState('');
+  const [masuk, setMasuk] = useState('');
+  const [keluar, setKeluar] = useState('');
+  const [checkInStatus, setCheckInStatus] = useState(null); // To track check-in status
   const navigation = useNavigation();
 
-  // Handling swipe to check-in
-  const handleSwipe = () => {
-    Alert.alert('Checked in successfully!');
-    navigation.navigate('Face'); // Navigate to the Face page
+  // Date logic to show today and the past 5 days only
+  const today = new Date();
+  const dates = Array.from({ length: 6 }, (_, index) => {
+    const date = new Date();
+    date.setDate(today.getDate() - index);
+    return {
+      day: date.getDate(),
+      fullDate: date.toISOString().split('T')[0], // Store full date for backend requests
+      dayName: date.toLocaleDateString('en-US', { weekday: 'short' }),
+    };
+  }).reverse(); // Reverse to show the most recent date at the end
+
+  useEffect(() => {
+    const fetchServerTime = async () => {
+      try {
+        const accessToken = await AsyncStorage.getItem('accessToken');
+        const headers = { Authorization: accessToken };
+        const response = await axios.get('http://10.0.2.2:3000/api/absensi/get/today/self', { headers });
+        setServerTime(response.data.currtime);
+        setMasuk(response.data.masuk);
+        setKeluar(response.data.keluar);
+        setCheckInStatus(response.data.status); // Set check-in status
+      } catch (error) {
+        console.error('Error fetching server time', error);
+      }
+    };
+
+    fetchServerTime();
+
+    const intervalId = setInterval(fetchServerTime, 1000); // Fetch every second
+    return () => clearInterval(intervalId); // Cleanup interval on component unmount
+  }, []);
+
+  useEffect(() => {
+    // Automatically select today's date in the scroll
+    const todayDate = today.getDate();
+    const todayIndex = dates.findIndex((date) => date.day === todayDate);
+    if (todayIndex !== -1) {
+      setSelectedDate(todayIndex); // Set the indicator to today's date
+    }
+  }, [dates]);
+
+  // Handling check-in by connecting with the backend
+  const handleSwipe = async () => {
+    // If the user has already checked in, show a message
+    if (checkInStatus === 'masuk' || checkInStatus === 'terlambat') {
+      Alert.alert('Already Checked In', 'You have already checked in for the day.');
+      return;
+    }
+
+    try {
+      const accessToken = await AsyncStorage.getItem('accessToken');
+      const headers = { Authorization: accessToken, 'Content-Type': 'application/json' };
+      const apiSubmit = 'http://10.0.2.2:3000/api/absensi/patch/masuk';
+
+      // Ambil waktu saat ini dari perangkat
+      const now = new Date();
+      const formattedTime = now.toTimeString().split(' ')[0]; // Format hh:mm:ss
+
+      // Kirim waktu check-in ke backend
+      await axios.patch(apiSubmit, { waktu_masuk: formattedTime }, { headers });
+      Alert.alert('Check In Success', 'You have checked in successfully!');
+      setCheckInStatus('masuk'); // Update check-in status after success
+    } catch (error) {
+      console.error('Error during check-in', error);
+      Alert.alert('Check In Failed', 'An error occurred while checking in.');
+    }
+  };
+
+  // Formatting server time for display
+  const formatServerTime = (time) => {
+    if (!time) return '';
+    const [hours, minutes, seconds] = time.split(':').map((part) => part.padStart(2, '0'));
+    return `${hours}:${minutes}:${seconds}`;
   };
 
   return (
@@ -44,16 +108,15 @@ const CheckIn = () => {
         <Text style={tw`text-white text-lg font-bold mt-10`}>
           Welcome back{'\n'}Yudis, Enjoy your work
         </Text>
-        <Text style={tw`text-white text-2xl font-bold mt-1`}>17:32:32</Text>
+        <Text style={tw`text-white text-2xl font-bold mt-1`}>{formatServerTime(serverTime)}</Text>
       </View>
 
-      {/* Date Scroll */}
+      {/* Date Scroll - Show today and past 5 days */}
       <View style={tw`py-2 mx-5`}>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={true}
-          contentContainerStyle={tw`py-2`} // Ensure proper padding
-          style={tw` `} // Set a max height for the scroll view
+          contentContainerStyle={tw`py-2`}
         >
           {dates.map((date, index) => (
             <TouchableOpacity
@@ -81,7 +144,7 @@ const CheckIn = () => {
               <Icon name="arrow-forward" size={16} color="red" />
               <Text style={tw`ml-1 font-bold text-black`}>Check In</Text>
             </View>
-            <Text style={tw`text-xl text-black`}>{checkInTime}</Text>
+            <Text style={tw`text-xl text-black`}>{masuk || ''}</Text>
             <Text style={tw`text-sm text-gray-600`}>Yesterday</Text>
           </View>
           <View style={tw`bg-white p-4 rounded-lg w-40 shadow-md`}>
@@ -89,7 +152,7 @@ const CheckIn = () => {
               <Icon name="arrow-back" size={16} color="red" />
               <Text style={tw`ml-1 font-bold text-black`}>Check Out</Text>
             </View>
-            <Text style={tw`text-xl text-black`}>{checkOutTime}</Text>
+            <Text style={tw`text-xl text-black`}>{keluar || ''}</Text>
             <Text style={tw`text-sm text-gray-600`}>Go Home</Text>
           </View>
         </View>

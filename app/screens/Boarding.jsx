@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, Animated, Dimensions } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
+import { View, Text, Image, TouchableOpacity, Animated, Dimensions, PanResponder } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import tw from 'tailwind-react-native-classnames';
 
@@ -20,29 +20,57 @@ const images = [
 
 const SlideshowScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [nextIndex, setNextIndex] = useState(1);
-  const [slideAnim] = useState(new Animated.Value(0));
+  const slideAnim = useRef(new Animated.Value(0)).current;
   const screenWidth = Dimensions.get('window').width;
   const navigation = useNavigation();
 
   useEffect(() => {
     const interval = setInterval(() => {
-      Animated.timing(slideAnim, {
-        toValue: -screenWidth,
-        duration: 800,
-        useNativeDriver: true,
-      }).start(() => {
-        setCurrentIndex(nextIndex);
-        setNextIndex((nextIndex + 1) % images.length);
-        slideAnim.setValue(0);
-      });
+      nextSlide();
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [nextIndex]);
+  }, [currentIndex]);
+
+  const nextSlide = () => {
+    const nextIndex = (currentIndex + 1) % images.length;
+    Animated.timing(slideAnim, {
+      toValue: -screenWidth,
+      duration: 800,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentIndex(nextIndex);
+      slideAnim.setValue(0);
+    });
+  };
+
+  const prevSlide = () => {
+    const prevIndex = (currentIndex - 1 + images.length) % images.length;
+    Animated.timing(slideAnim, {
+      toValue: screenWidth,
+      duration: 800,
+      useNativeDriver: true,
+    }).start(() => {
+      setCurrentIndex(prevIndex);
+      slideAnim.setValue(0);
+    });
+  };
+
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: (evt, gestureState) => {
+      return Math.abs(gestureState.dx) > 30;
+    },
+    onPanResponderRelease: (evt, gestureState) => {
+      if (gestureState.dx > 30) {
+        prevSlide();
+      } else if (gestureState.dx < -30) {
+        nextSlide();
+      }
+    },
+  });
 
   return (
-    <View style={tw`flex-1 justify-center items-center`}>
+    <View style={tw`flex-1 justify-center items-center`} {...panResponder.panHandlers}>
       {/* Current Image */}
       <Animated.View
         style={[
@@ -55,33 +83,36 @@ const SlideshowScreen = () => {
         <Image source={{ uri: images[currentIndex].url }} style={tw`w-full h-full opacity-75`} />
       </Animated.View>
 
-      {/* Next Image */}
-      <Animated.View
-        style={[
-          tw`absolute w-full h-full`,
-          {
-            transform: [{
-              translateX: slideAnim.interpolate({
-                inputRange: [-screenWidth, 0],
-                outputRange: [0, screenWidth],
-              })
-            }],
-          },
-        ]}
-      >
-        <Image source={{ uri: images[nextIndex].url }} style={tw`w-full h-full opacity-75`} />
-      </Animated.View>
-
+      {/* Overlay for a dimming effect */}
       <View style={tw`absolute w-full h-full bg-black opacity-25`} />
 
+      {/* Slide Text */}
       <View style={tw`absolute bottom-24 w-full items-center`}>
         <Text style={tw`text-white font-bold text-2xl text-center mb-5`}>{images[currentIndex].text}</Text>
-        <TouchableOpacity
-          style={tw`bg-red-600 py-3 px-10 rounded-full`}
-          onPress={() => navigation.navigate('Login')}
-        >
-          <Text style={tw`text-white text-lg font-bold`}>Get Started!</Text>
-        </TouchableOpacity>
+        {/* Show button only on the last slide */}
+        {currentIndex === images.length - 1 && (
+          <TouchableOpacity
+            style={tw`bg-red-600 py-3 px-10 rounded-full`}
+            onPress={() => navigation.navigate('Login')}
+          >
+            <Text style={tw`text-white text-lg font-bold`}>Get Started!</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
+      {/* Indicators */}
+      <View style={tw`absolute bottom-16 flex-row justify-center`}>
+        {images.map((_, index) => (
+          <View
+            key={index}
+            style={[
+              tw`w-3 h-3 mx-1 rounded-full`,
+              {
+                backgroundColor: currentIndex === index ? 'white' : 'gray',
+              },
+            ]}
+          />
+        ))}
       </View>
     </View>
   );
