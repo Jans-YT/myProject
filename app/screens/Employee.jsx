@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import Svg, { Path } from 'react-native-svg';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const OvertimePage = () => {
   const navigation = useNavigation();
@@ -46,10 +47,7 @@ const OvertimePage = () => {
           </Svg>
         </TouchableOpacity>
         <View style={tw`justify-center items-center`}>
-          <Svg width="56" height="56" viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <Path d="M27.9999 24.8576C32.0893 24.8576 35.4043 21.5843 35.4043 17.5465C35.4043 13.5086 32.0893 10.2354 27.9999 10.2354C23.9105 10.2354 20.5955 13.5086 20.5955 17.5465C20.5955 21.5843 23.9105 24.8576 27.9999 24.8576Z" fill="white" />
-            {/* SVG paths lainnya */}
-          </Svg>
+        <Icon name="person" size={100} color="#FFFFFF" />
           <Text style={tw`text-white font-bold text-3xl mt-2`}>Employee</Text>
           <Text style={tw`text-white text-xs`}>Hexaon Business Mitrasindo</Text>
         </View>

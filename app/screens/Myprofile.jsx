@@ -57,9 +57,9 @@ const MyProfile = ({ navigation }) => {
         <View style={tw`flex mt-10`}>
           <Image
             source={{ uri: profileData?.dokumen || 'https://via.placeholder.com/150' }}
-            style={tw`w-24 h-24 rounded-full border-4 border-white mt-4`}
+            style={tw`w-24 h-24 rounded-full content-center border-4 border-white mt-4`}
           />
-          <Text style={tw`text-white text-xl font-bold mt-2`}>{profileData?.nama || 'My Profile'}</Text>
+          <Text style={tw`text-white  text-xl font-bold mt-2`}>{profileData?.nama || 'My Profile'}</Text>
           <Text style={tw`text-white text-2xl font-bold mt-1`}>{profileData?.jabatan || 'Personal'}</Text>
         </View>
       </View>

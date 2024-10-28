@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import tw from 'tailwind-react-native-classnames';
 
 const LoginScreen = ({ navigation }) => {
@@ -53,7 +52,7 @@ const LoginScreen = ({ navigation }) => {
 
       if (response.status === 200) {
         const { accessToken, result, role, jabatan, operation, status } = response.data;
-        Alert.alert('Login Berhasil', `Selamat datang, ${role}!`);
+        // Alert.alert('Login Berhasil', `Selamat datang, ${role}!`);
         console.log('Login Successful:', { accessToken, result, role, jabatan, operation, status });
 
         // Simpan token dan informasi penting ke AsyncStorage
@@ -76,9 +75,12 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <ImageBackground
-      source={{ uri: 'https://static.wikia.nocookie.net/the-muse-list/images/1/11/Moric.png/revision/latest?cb=20201222211907' }}
+      source={{ uri: 'https://thumbs.dreamstime.com/b/business-phone-call-black-man-suit-talking-contact-negotiation-feedback-b-deal-african-person-professional-327560714.jpg' }}
       style={tw`flex-1 justify-center`}
     >
+      {/* Overlay for dim effect */}
+      <View style={tw`absolute inset-0 bg-black opacity-40`} />
+
       <View style={tw`flex-1 justify-center items-center p-5`}>
         <View style={tw`w-11/12 bg-white rounded-lg p-5 shadow-lg justify-center items-center absolute bottom-12`}>
           
